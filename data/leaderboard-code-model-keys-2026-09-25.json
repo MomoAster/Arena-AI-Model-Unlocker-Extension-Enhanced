@@ -1,0 +1,92 @@
+{
+  "source": "https://arena.ai/leaderboard/code",
+  "capturedOn": "2026-09-25",
+  "snapshotVoteCutoff": "2026-09-23T22:00:00.000Z",
+  "identifierType": "leaderboard modelKey; not a verified Direct-mode UUID",
+  "models": [
+    {
+      "modelDisplayName": "claude-opus-5.5-max",
+      "modelKey": "claude-opus-5.5-max-vertex-webdev",
+      "rank": 1,
+      "votes": 1219
+    },
+    {
+      "modelDisplayName": "claude-fable-5.1-max",
+      "modelKey": "claude-fable-5.1-max-webdev",
+      "rank": 3,
+      "votes": 4916
+    },
+    {
+      "modelDisplayName": "claude-opus-5-max",
+      "modelKey": "claude-opus-5-max-webdev",
+      "rank": 4,
+      "votes": 14351
+    },
+    {
+      "modelDisplayName": "claude-opus-5-high",
+      "modelKey": "claude-opus-5-high-webdev",
+      "rank": 7,
+      "votes": 17134
+    },
+    {
+      "modelDisplayName": "claude-fable-5-high",
+      "modelKey": "claude-fable-5-webdev",
+      "rank": 14,
+      "votes": 11933
+    },
+    {
+      "modelDisplayName": "claude-opus-4-7",
+      "modelKey": "claude-opus-4-7-webdev",
+      "rank": 29,
+      "votes": 15898
+    },
+    {
+      "modelDisplayName": "claude-opus-4-7-high",
+      "modelKey": "claude-opus-4-7-thinking-webdev",
+      "rank": 30,
+      "votes": 16372
+    },
+    {
+      "modelDisplayName": "claude-opus-4-8-high",
+      "modelKey": "claude-opus-4-8-thinking-webdev",
+      "rank": 31,
+      "votes": 16154
+    },
+    {
+      "modelDisplayName": "claude-opus-4-6-high",
+      "modelKey": "claude-opus-4-6-thinking-webdev",
+      "rank": 33,
+      "votes": 18313
+    },
+    {
+      "modelDisplayName": "claude-opus-4-6",
+      "modelKey": "claude-opus-4-6",
+      "rank": 36,
+      "votes": 19516
+    },
+    {
+      "modelDisplayName": "claude-opus-4-8",
+      "modelKey": "claude-opus-4-8-webdev",
+      "rank": 38,
+      "votes": 15113
+    },
+    {
+      "modelDisplayName": "claude-opus-4-5-20251101-high-32k",
+      "modelKey": "claude-opus-4-5-20251101-thinking-32k",
+      "rank": 50,
+      "votes": 10593
+    },
+    {
+      "modelDisplayName": "claude-opus-4-5-20251101",
+      "modelKey": "claude-opus-4-5-20251101",
+      "rank": 57,
+      "votes": 12906
+    },
+    {
+      "modelDisplayName": "claude-opus-4-1-20250805",
+      "modelKey": "claude-opus-4-1-20250805",
+      "rank": 87,
+      "votes": 6771
+    }
+  ]
+}

@@ -40,6 +40,14 @@ An experimental browser extension for exploring historical model entries in Aren
 
 Arena 当日的公开 Direct 模型目录有 301 个唯一模型，未包含 Opus 或 Fable；[文字排行榜](https://arena.ai/leaderboard/text)则列有它们的评测名称和 `modelKey`。仓库保存了 [17 条 Opus/Fable 排行榜标识](data/leaderboard-model-keys-2026-09-25.json)，供查阅和核对。**排行榜 `modelKey` 不是 Direct 所需的 UUID，也不代表允许手动指定。** Arena 的前端在 Battle 模式不发送所选模型 ID，由服务端分配；Direct 模式发送所选 UUID，以上请求被服务端明确拒绝。
 
+### Battle 随机路由
+
+[Arena 的 Battle 说明](https://help.arena.ai/articles/4489017547-how-to-use-battle-mode)指出，两名模型在投票前保持匿名，投票后才揭示身份。[Arena 的采样政策](https://arena.ai/blog/policy/)说明：公开模型通常接近均匀抽样，但会为排行榜质量、新模型和领先模型调整权重；模型也可能退出 Battle。用户没有选择具体匿名模型的官方开关。
+
+2026-09-25 的一次 Code Battle 实测中，请求为 `mode=battle`、`modality=webdev`，没有 `modelAId` 或 `modelBId`，由 Arena 返回 HTTP 200 并开始生成。[代码榜快照](data/leaderboard-code-model-keys-2026-09-25.json)的投票截止时间是 2026-09-23 22:00 UTC，其中 `claude-opus-5.5-max-vertex-webdev` 有 1,219 票，Fable 5.1 Max 有 4,916 票。**这些累计票数证明模型进入过代码评测，不能确定此刻仍在候选池，也不能计算当前抽中概率。** 选择 Code Battle 会把请求送入代码模态；提示词和重复请求能否偏向特定模型，没有可靠证据。
+
+文字榜快照的投票截止时间是 2026-09-13 14:00 UTC，比代码榜更早。累计票数包含过去的对战，不能仅凭榜单推断今天仍在抽样。[官方说明](https://arena.ai/faq)指出，Battle 的模型身份在投票后才揭示；本次 Code Battle 诊断没有提交投票，因此只验证了服务端接受不带指定 ID 的请求并开始生成，未识别本次抽中的模型。
+
 ## 历史数据
 
 模型 UUID、名称和能力字段由 [Arena AI Proxy 的模型快照](https://github.com/taipgonesistema-cloud/arena-ai-proxy/blob/a1c1610bd1b06256f8eb157318df5f339a7d6f10/data/models-list.json) 转换而来。该快照采用 MIT 许可，完整说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。`scripts/generate_archive.py` 固定了数据源提交，可重新生成 `extension/archive.js`。本扩展代码为独立实现。

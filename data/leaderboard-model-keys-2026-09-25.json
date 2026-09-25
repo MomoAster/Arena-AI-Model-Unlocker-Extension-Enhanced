@@ -1,6 +1,7 @@
 {
   "source": "https://arena.ai/leaderboard/text",
   "capturedOn": "2026-09-25",
+  "snapshotVoteCutoff": "2026-09-13T14:00:00.000Z",
   "identifierType": "leaderboard modelKey; these are not verified Direct-mode UUIDs",
   "models": [
     {"displayName":"claude-3-opus-20240229","modelKey":"claude-3-opus-20240229"},
