@@ -16,7 +16,7 @@ An experimental browser extension for exploring historical model entries in Aren
 
 ## 安装
 
-1. 下载 [`dist/Arena-Model-Unlocker-Enhanced-v1.1.0.zip`](dist/Arena-Model-Unlocker-Enhanced-v1.1.0.zip) 并解压。
+1. 下载 [`dist/Arena-Model-Unlocker-Enhanced-v1.2.0.zip`](dist/Arena-Model-Unlocker-Enhanced-v1.2.0.zip) 并解压。
 2. 打开 `chrome://extensions`（Edge 为 `edge://extensions`），开启开发者模式。
 3. 选择“加载已解压的扩展程序”，指向包含 `manifest.json` 的文件夹。
 4. 如果装过其他修改 Arena 模型列表的扩展，先停用它们，避免脚本冲突。
@@ -29,9 +29,14 @@ An experimental browser extension for exploring historical model entries in Aren
 
 - **搜索不到模型：** 确认扩展已启用、当前网址受支持，并刷新 Arena 页面。弹窗会提示页面是否处理了模型数据。
 - **能选择但生成失败：** 选择器注入已经生效，但生成请求没有成功。可能涉及 Arena 的模型供应、验证、额度或临时故障；仅凭列表和一次报错无法判定是哪一种。扩展不能代替 Arena 恢复服务端已停用的模型。
+- **弹窗显示 HTTP 错误：** 扩展只记录最近一次历史模型请求的模型名称和 HTTP 状态，不保存提示词。HTTP 200 也不等于已生成回复。
 - **正常生成：** 以实际回复和 Arena 显示的模型为准；模型名称或历史 ID 本身不能证明调用成功。
 
 开发者可运行 `npm test`。扩展源码位于 `extension/`，没有构建依赖。
+
+## 当前验证结果
+
+2026-09-25 的一次 Chrome 实测中，刷新页面后可搜索并选中历史 Opus；`claude-opus-4-6` 的生成请求到达 Arena 后返回 HTTP 400，`claude-opus-4-6-thinking` 也显示生成失败。同一浏览器中的公开模型 `claude-sonnet-4-6` 正常回复。这个结果证明列表可见与模型可用是两道不同的检查；它不代表所有历史 ID 在所有时间和环境下都得到相同结果。
 
 ## 历史数据
 

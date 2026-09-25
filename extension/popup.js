@@ -43,7 +43,10 @@
     let saved;
     try { saved = JSON.parse(page.settings); } catch (_) { saved = null; }
     for (const key of KEYS) inputs[key].checked = typeof saved?.[key] === "boolean" ? saved[key] : DEFAULTS[key];
-    if (page.diagnostics?.flightChunksChanged > 0 || page.diagnostics?.catalogRequests > 0) {
+    if (page.diagnostics?.lastHistoricalRequest?.status >= 400) {
+      const last = page.diagnostics.lastHistoricalRequest;
+      setStatus(`最近的 ${last.model} 请求未成功（HTTP ${last.status}）。`, true);
+    } else if (page.diagnostics?.flightChunksChanged > 0 || page.diagnostics?.catalogRequests > 0) {
       if (page.diagnostics.liveOpusInPage === false) {
         setStatus(`已加入历史候选；Arena 本页原始目录没有 Opus，生成可能失败。`);
       } else {

@@ -108,3 +108,20 @@ test("fetch hook augments only the same-origin model catalog", async () => {
   const untouched = await windowLike.fetch("https://example.com/nextjs-api/model-catalog");
   assert.equal(untouched, original);
 });
+
+test("failed historical generation records status without retaining prompt text", async () => {
+  const original = new Response('{"error":"not available"}', { status: 400 });
+  const windowLike = {
+    localStorage: { getItem: () => null },
+    location: { href: "https://arena.ai/text/direct", origin: "https://arena.ai" },
+    fetch: async () => original
+  };
+  const diagnostics = core.install(windowLike, [opus]);
+  const response = await windowLike.fetch("/nextjs-api/stream/create-evaluation", {
+    method: "POST",
+    body: JSON.stringify({ modelAId: opus.id, userMessage: { content: "private test prompt" } })
+  });
+  assert.equal(response, original);
+  assert.deepEqual(diagnostics.lastHistoricalRequest, { model: opus.publicName, status: 400 });
+  assert.equal(JSON.stringify(diagnostics).includes("private test prompt"), false);
+});

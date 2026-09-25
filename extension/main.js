@@ -110,7 +110,9 @@
     const settings = readSettings(win.localStorage);
     const records = Array.isArray(archive) ? archive : [];
     const patchedQueues = new WeakSet();
-    const diagnostics = { version: "1.1.0", archivedCandidates: selectedArchive(records, settings).length, catalogRequests: 0, flightChunksChanged: 0, liveOpusInPage: null };
+    const candidates = selectedArchive(records, settings);
+    const candidateNames = new Map(candidates.map(model => [model.id, model.publicName]));
+    const diagnostics = { version: "1.2.0", archivedCandidates: candidates.length, catalogRequests: 0, flightChunksChanged: 0, liveOpusInPage: null, lastHistoricalRequest: null };
     win.__arenaModelUnlockerEnhanced = diagnostics;
 
     function observeLiveModels(entry) {
@@ -159,7 +161,7 @@
     const originalFetch = win.fetch;
     win.fetch = function (...args) {
       return Reflect.apply(originalFetch, this, args).then(async response => {
-        if (!settings.enabled || !response?.ok || response.status === 204 || response.status === 205) return response;
+        if (!settings.enabled || !response) return response;
         const input = args[0];
         const rawUrl = typeof input === "string" || input instanceof URL ? String(input) : input?.url;
         if (!rawUrl) return response;
@@ -168,6 +170,17 @@
           url = new URL(rawUrl, win.location.href);
           if (url.origin !== win.location.origin) return response;
         } catch (_) { return response; }
+
+        if (url.pathname === "/nextjs-api/stream/create-evaluation" ||
+            url.pathname.startsWith("/nextjs-api/stream/post-to-evaluation/")) {
+          try {
+            // Inspect model IDs only; never retain the prompt or other request fields.
+            const request = JSON.parse(args[1]?.body || "null");
+            const model = candidateNames.get(request?.modelAId) || candidateNames.get(request?.modelBId);
+            if (model) diagnostics.lastHistoricalRequest = { model, status: response.status };
+          } catch (_) { /* Other request shape. */ }
+        }
+        if (!response.ok || response.status === 204 || response.status === 205) return response;
 
         try {
           const length = Number(response.headers.get("content-length"));
