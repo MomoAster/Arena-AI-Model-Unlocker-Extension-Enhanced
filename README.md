@@ -31,7 +31,6 @@
 
 ## 数据来源与归属
 
-历史模型 UUID、名称和能力字段由 [Arena AI Proxy 的模型快照](https://github.com/taipgonesistema-cloud/arena-ai-proxy/blob/a1c1610bd1b06256f8eb157318df5f339a7d6f10/data/models-list.json) 转换而来，原始数据采用 MIT 许可，见 [THIRD_PARTY_LICENSE.txt](THIRD_PARTY_LICENSE.txt)。`scripts/generate_archive.py` 固定了源提交，可重新生成 `extension/archive.js`。
+历史模型 UUID、名称和能力字段由 [Arena AI Proxy 的模型快照](https://github.com/taipgonesistema-cloud/arena-ai-proxy/blob/a1c1610bd1b06256f8eb157318df5f339a7d6f10/data/models-list.json) 转换而来，原始数据采用 MIT 许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。`scripts/generate_archive.py` 固定了源提交，可重新生成 `extension/archive.js`。
 
 这个项目是独立重写。功能构想参考了 [RAKE 的 Arena Model Unlocker](https://github.com/theraker526/Arena-AI-Model-Unlocker-Extension)，没有复制其未授权的代码或图标。
-

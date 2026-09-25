@@ -1,3 +1,10 @@
+# Third-party data notice
+
+`extension/archive.js` is generated from the Arena AI Proxy model snapshot at
+commit `a1c1610bd1b06256f8eb157318df5f339a7d6f10`. The following MIT license
+applies to that upstream dataset. It does not state a license for this project's
+independently written extension code.
+
 MIT License
 
 Copyright (c) 2026 Arena AI Proxy contributors
