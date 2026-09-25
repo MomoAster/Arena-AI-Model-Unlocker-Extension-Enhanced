@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arena Model Unlocker Enhanced</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">ARENA · ENHANCED</div>
+      <h1>模型目录增强</h1>
+      <p>恢复可见的历史模型记录，并保留当前目录。</p>
+    </header>
+
+    <div id="site" class="site">正在读取当前页面…</div>
+    <div class="options">
+      <label class="row"><span><strong>启用插件</strong><small>仅影响 Arena 页面</small></span><input id="enabled" type="checkbox"></label>
+      <label class="row"><span><strong>显示历史 Opus</strong><small>注入已知的 Opus 模型记录</small></span><input id="restoreOpus" type="checkbox"></label>
+      <label class="row"><span><strong>显示隐藏标记模型</strong><small>对当前目录中不可选的记录开放选择</small></span><input id="showHidden" type="checkbox"></label>
+      <label class="row"><span><strong>加入其他历史模型</strong><small>实验功能，可能已被 Arena 停用</small></span><input id="includeArchive" type="checkbox"></label>
+    </div>
+
+    <button id="apply" type="button" disabled>保存并刷新 Arena</button>
+    <p id="status" class="status" role="status"></p>
+    <p class="footnote">显示在列表中不等于服务端允许调用。设置按站点保存。</p>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
