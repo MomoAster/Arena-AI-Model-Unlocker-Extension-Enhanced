@@ -6,6 +6,7 @@
   const site = document.getElementById("site");
   const status = document.getElementById("status");
   const apply = document.getElementById("apply");
+  const refresh = document.getElementById("refresh");
   let tabId;
 
   function supported(hostname) {
@@ -42,10 +43,14 @@
     let saved;
     try { saved = JSON.parse(page.settings); } catch (_) { saved = null; }
     for (const key of KEYS) inputs[key].checked = typeof saved?.[key] === "boolean" ? saved[key] : DEFAULTS[key];
-    if (page.diagnostics) {
-      setStatus(`已加载 ${page.diagnostics.archivedCandidates} 条历史候选记录`);
+    if (page.diagnostics?.flightChunksChanged > 0 || page.diagnostics?.catalogRequests > 0) {
+      if (page.diagnostics.liveOpusInPage === false) {
+        setStatus(`已加入历史候选；Arena 本页原始目录没有 Opus，生成可能失败。`);
+      } else {
+        setStatus(`已处理模型数据；历史候选 ${page.diagnostics.archivedCandidates} 条。`);
+      }
     } else {
-      setStatus("插件将在刷新页面后运行");
+      setStatus("本页尚未处理模型数据。请先刷新 Arena。", true);
     }
     for (const input of Object.values(inputs)) input.addEventListener("change", () => { apply.disabled = false; });
   }
@@ -67,9 +72,22 @@
     }
   });
 
+  refresh.addEventListener("click", async () => {
+    refresh.disabled = true;
+    try {
+      await chrome.tabs.reload(tabId);
+      setStatus("页面已刷新，请重新打开模型选择器");
+    } catch (error) {
+      setStatus(error.message || "刷新失败", true);
+    } finally {
+      refresh.disabled = false;
+    }
+  });
+
   initialize().catch(error => {
     site.textContent = "当前页面不受支持";
     setStatus(error.message || "无法连接页面", true);
     for (const input of Object.values(inputs)) input.disabled = true;
+    refresh.disabled = true;
   });
 })();

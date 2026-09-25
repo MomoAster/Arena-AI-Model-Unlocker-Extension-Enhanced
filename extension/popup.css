@@ -13,9 +13,12 @@ header p{font-size:12px;color:#657176;margin:0;line-height:1.5}
 .row strong{font-size:12px;font-weight:650}
 .row small{font-size:10px;color:#758084;line-height:1.4}
 .row input{accent-color:#5d7779;width:17px;height:17px;margin:0;flex:none;cursor:pointer}
-.row input:focus-visible,#apply:focus-visible{outline:2px solid #4f797a;outline-offset:3px}
-#apply{width:100%;border:0;border-radius:7px;padding:10px 12px;font-size:12px;font-weight:700;color:#fff;background:#536f72;cursor:pointer}
+.row input:focus-visible,.actions button:focus-visible{outline:2px solid #4f797a;outline-offset:3px}
+.actions{display:grid;grid-template-columns:1fr auto;gap:8px}
+.actions button{border:0;border-radius:7px;padding:10px 12px;font-size:12px;font-weight:700;cursor:pointer}
+#apply{color:#fff;background:#536f72}
 #apply:disabled{background:#bdc8c7;cursor:default}
+#refresh{color:#536f72;background:#e0e8e5}
 .status{min-height:16px;margin:9px 0 0;font-size:11px;color:#5c6b6b}
 .status.error{color:#a34949}
 .footnote{font-size:10px;line-height:1.45;color:#7b8584;margin:8px 0 0}

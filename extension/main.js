@@ -110,17 +110,31 @@
     const settings = readSettings(win.localStorage);
     const records = Array.isArray(archive) ? archive : [];
     const patchedQueues = new WeakSet();
-    const diagnostics = { version: "1.0.0", archivedCandidates: selectedArchive(records, settings).length, catalogRequests: 0, flightChunksChanged: 0 };
+    const diagnostics = { version: "1.1.0", archivedCandidates: selectedArchive(records, settings).length, catalogRequests: 0, flightChunksChanged: 0, liveOpusInPage: null };
     win.__arenaModelUnlockerEnhanced = diagnostics;
+
+    function observeLiveModels(entry) {
+      const payload = Array.isArray(entry) ? entry[1] : undefined;
+      if (typeof payload !== "string" || !payload.includes("initialModels")) return;
+      const normalized = payload.replace(/\\"/g, '"');
+      if (!normalized.includes('"initialModels":[')) return;
+      diagnostics.liveOpusInPage = /"(?:publicName|name)"\s*:\s*"[^"\r\n]*opus/i.test(normalized);
+    }
 
     function patchQueue(queue) {
       if (!Array.isArray(queue) || patchedQueues.has(queue)) return;
       patchedQueues.add(queue);
-      for (const entry of queue) rewriteQueueEntry(entry, settings, records);
+      for (const entry of queue) {
+        const before = Array.isArray(entry) ? entry[1] : undefined;
+        observeLiveModels(entry);
+        rewriteQueueEntry(entry, settings, records);
+        if (entry?.[1] !== before) diagnostics.flightChunksChanged += 1;
+      }
       const originalPush = queue.push;
       queue.push = function (...entries) {
         for (const entry of entries) {
           const before = Array.isArray(entry) ? entry[1] : undefined;
+          observeLiveModels(entry);
           rewriteQueueEntry(entry, settings, records);
           if (entry?.[1] !== before) diagnostics.flightChunksChanged += 1;
         }
@@ -161,6 +175,8 @@
           if (url.pathname === "/nextjs-api/model-catalog") {
             const catalog = await response.clone().json();
             if (!Array.isArray(catalog)) return response;
+            diagnostics.liveOpusInPage = catalog.some(section => Array.isArray(section?.models) &&
+              section.models.some(model => /opus/i.test(model?.publicName || model?.name || "")));
             const original = JSON.stringify(catalog);
             mergeCatalog(catalog, settings, records);
             const changed = JSON.stringify(catalog);

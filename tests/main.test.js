@@ -70,6 +70,20 @@ test("queue hook patches chunks published after installation", () => {
   windowLike.__next_f.push(item);
   assert.equal(JSON.parse(item[1]).initialModels[0].id, opus.id);
   assert.equal(windowLike.__arenaModelUnlockerEnhanced.flightChunksChanged, 1);
+  assert.equal(windowLike.__arenaModelUnlockerEnhanced.liveOpusInPage, false);
+});
+
+test("existing bootstrap chunks are patched and counted when the hook attaches", () => {
+  const entry = [1, '{"initialModels":[]}'];
+  const windowLike = {
+    __next_f: [entry],
+    localStorage: { getItem: () => null },
+    location: { href: "https://arena.ai/text/direct", origin: "https://arena.ai" }
+  };
+  core.install(windowLike, [opus]);
+  assert.equal(JSON.parse(entry[1]).initialModels[0].id, opus.id);
+  assert.equal(windowLike.__arenaModelUnlockerEnhanced.flightChunksChanged, 1);
+  assert.equal(windowLike.__arenaModelUnlockerEnhanced.liveOpusInPage, false);
 });
 
 test("fetch hook augments only the same-origin model catalog", async () => {
@@ -89,6 +103,7 @@ test("fetch hook augments only the same-origin model catalog", async () => {
   assert.equal(models[1].id, opus.id);
   assert.equal(rewritten.headers.has("content-length"), false);
   assert.equal(windowLike.__arenaModelUnlockerEnhanced.catalogRequests, 1);
+  assert.equal(windowLike.__arenaModelUnlockerEnhanced.liveOpusInPage, false);
 
   const untouched = await windowLike.fetch("https://example.com/nextjs-api/model-catalog");
   assert.equal(untouched, original);

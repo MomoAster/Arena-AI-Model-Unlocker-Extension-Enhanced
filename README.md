@@ -1,36 +1,38 @@
 # Arena Model Unlocker Enhanced
 
-面向 Chrome、Edge、Brave 的 Manifest V3 扩展，尝试让 Arena 与 Canary Arena 的历史模型记录重新出现在本地选择器中。当前重点是 Claude Opus。
+一个适用于 Chrome、Edge 和 Brave 的 Arena 模型目录扩展。它可以把已知的历史模型加入 Arena、Canary Arena 的模型搜索和选择器，重点支持 Claude Opus。安装或更新后刷新 Arena 页面，再搜索模型名称即可查看结果。
 
-## 当前能力
+**模型出现在列表里，不等于 Arena 仍提供该模型。** 扩展只能修改浏览器看到的目录；实际生成是否成功由 Arena 服务端决定。历史记录是实验性候选项，不应当当作实时可用模型清单。
 
-- 在页面启动时修改 React Flight 的 `initialModels`，补入已知的历史 Opus 记录。
-- 补全 `/nextjs-api/model-catalog` 返回的模型目录，覆盖首屏没有模型数据的情形。
-- 可选地放开当前目录中的 `userSelectable: false` 标记，或加入其他历史模型。
-- 限定在 `arena.ai` 和 `canaryarena.ai`，不读取聊天内容，不向第三方发送数据。
+An experimental browser extension for exploring historical model entries in Arena. It can make entries visible in the selector, but it cannot restore server-side access to retired models.
 
-**边界：** 扩展修改的是浏览器中的模型目录和选择器。Arena 的服务端仍决定某个历史 ID 是否接受请求。模型出现在列表里不代表它能生成回复；已从服务端撤下的模型不能靠扩展恢复。历史记录可能过期，界面改版也可能使注入失效。
+## 功能
 
-2026-09-25 核查时，当前账号页面和公开的 `/nextjs-api/model-catalog` 都没有 Opus 记录。公开目录共有 301 个唯一模型，全部标为可选。这也是只把 `userSelectable` 从 `false` 改为 `true` 的旧扩展如今不起作用的原因。
+- 把历史 Opus 记录加入 Direct 模式的模型选择器。
+- 处理页面首屏模型数据和后续模型目录请求；不会替换或删除 Arena 当前提供的模型。
+- 可选显示页面标为不可选的记录，或加入其他历史模型。
+- 弹窗显示页面是否处理过模型数据，并提供独立的刷新按钮。
+- 仅作用于 `arena.ai`、`canaryarena.ai`；扩展不读取聊天内容，也不向第三方发送数据。
 
 ## 安装
 
-1. 从仓库下载 `dist/Arena-Model-Unlocker-Enhanced-v1.0.0.zip` 并解压。
-2. 打开 `chrome://extensions`（Edge 用 `edge://extensions`），开启“开发者模式”。
-3. 点击“加载已解压的扩展程序”，选择解压后**包含 `manifest.json` 的文件夹**。
-4. 关闭或停用功能相近的旧扩展，避免两份脚本同时修改同一页面。
-5. 打开或刷新 [Arena](https://arena.ai/text/direct)，点击扩展图标。默认启用历史 Opus；其他历史模型需手动开启。
+1. 下载 [`dist/Arena-Model-Unlocker-Enhanced-v1.1.0.zip`](dist/Arena-Model-Unlocker-Enhanced-v1.1.0.zip) 并解压。
+2. 打开 `chrome://extensions`（Edge 为 `edge://extensions`），开启开发者模式。
+3. 选择“加载已解压的扩展程序”，指向包含 `manifest.json` 的文件夹。
+4. 如果装过其他修改 Arena 模型列表的扩展，先停用它们，避免脚本冲突。
+5. **刷新已打开的 Arena 标签页。** 扩展不会追溯修改安装前已经加载的页面；弹窗里的“仅刷新页面”按钮可完成这一步。
+6. 在 [Arena Direct](https://arena.ai/text/direct) 的模型搜索框输入 `opus`。
 
-设置分别保存在两个站点的浏览器本地存储里。修改设置后，点击“保存并刷新 Arena”。
+设置按站点保存在浏览器本地。切换开关后点击“保存并刷新 Arena”。
 
-## 验证
+## 如何判断是否生效
 
-打开 Arena 的 Direct 模式，在模型搜索框输入 `opus`。若出现历史 Opus，说明本地选择器注入生效；要验证实际调用，还需发送一次普通提示并检查是否得到模型回复。出现模型但请求报错，说明服务端没有接受该模型，扩展无法把它变成可用。
+- **搜索不到模型：** 确认扩展已启用、当前网址受支持，并刷新 Arena 页面。弹窗会提示页面是否处理了模型数据。
+- **能选择但生成失败：** 选择器注入已经生效，但生成请求没有成功。可能涉及 Arena 的模型供应、验证、额度或临时故障；仅凭列表和一次报错无法判定是哪一种。扩展不能代替 Arena 恢复服务端已停用的模型。
+- **正常生成：** 以实际回复和 Arena 显示的模型为准；模型名称或历史 ID 本身不能证明调用成功。
 
-开发者可运行 `npm test`。扩展源码在 `extension/`，无构建依赖。
+开发者可运行 `npm test`。扩展源码位于 `extension/`，没有构建依赖。
 
-## 数据来源与归属
+## 历史数据
 
-历史模型 UUID、名称和能力字段由 [Arena AI Proxy 的模型快照](https://github.com/taipgonesistema-cloud/arena-ai-proxy/blob/a1c1610bd1b06256f8eb157318df5f339a7d6f10/data/models-list.json) 转换而来，原始数据采用 MIT 许可，见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。`scripts/generate_archive.py` 固定了源提交，可重新生成 `extension/archive.js`。
-
-这个项目是独立重写。功能构想参考了 [RAKE 的 Arena Model Unlocker](https://github.com/theraker526/Arena-AI-Model-Unlocker-Extension)，没有复制其未授权的代码或图标。
+模型 UUID、名称和能力字段由 [Arena AI Proxy 的模型快照](https://github.com/taipgonesistema-cloud/arena-ai-proxy/blob/a1c1610bd1b06256f8eb157318df5f339a7d6f10/data/models-list.json) 转换而来。该快照采用 MIT 许可，完整说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。`scripts/generate_archive.py` 固定了数据源提交，可重新生成 `extension/archive.js`。本扩展代码为独立实现。
