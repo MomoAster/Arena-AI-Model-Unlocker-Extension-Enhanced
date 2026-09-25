@@ -36,7 +36,9 @@ An experimental browser extension for exploring historical model entries in Aren
 
 ## 当前验证结果
 
-2026-09-25 的一次 Chrome 实测中，刷新页面后可搜索并选中历史 Opus；`claude-opus-4-6` 的生成请求到达 Arena 后返回 HTTP 400，`claude-opus-4-6-thinking` 也显示生成失败。同一浏览器中的公开模型 `claude-sonnet-4-6` 正常回复。这个结果证明列表可见与模型可用是两道不同的检查；它不代表所有历史 ID 在所有时间和环境下都得到相同结果。
+2026-09-25 的一次 Chrome 实测中，刷新页面后可搜索并选中历史 Opus；`claude-opus-4-6` 的生成请求发送了历史 UUID `019c2fac-13de-7550-a751-f5f593c77c72`，Arena 返回 HTTP 400：`Selected model is not available for user selection`。同一浏览器中的公开模型 `claude-sonnet-4-6` 正常回复。这个结果只验证了上述模型与当时的 Direct 调用，不能推断所有历史模型的状态。
+
+Arena 当日的公开 Direct 模型目录有 301 个唯一模型，未包含 Opus 或 Fable；[文字排行榜](https://arena.ai/leaderboard/text)则列有它们的评测名称和 `modelKey`。仓库保存了 [17 条 Opus/Fable 排行榜标识](data/leaderboard-model-keys-2026-09-25.json)，供查阅和核对。**排行榜 `modelKey` 不是 Direct 所需的 UUID，也不代表允许手动指定。** Arena 的前端在 Battle 模式不发送所选模型 ID，由服务端分配；Direct 模式发送所选 UUID，以上请求被服务端明确拒绝。
 
 ## 历史数据
 

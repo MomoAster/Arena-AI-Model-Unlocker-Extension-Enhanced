@@ -1,0 +1,24 @@
+{
+  "source": "https://arena.ai/leaderboard/text",
+  "capturedOn": "2026-09-25",
+  "identifierType": "leaderboard modelKey; these are not verified Direct-mode UUIDs",
+  "models": [
+    {"displayName":"claude-3-opus-20240229","modelKey":"claude-3-opus-20240229"},
+    {"displayName":"claude-fable-5-high","modelKey":"claude-fable-5-text"},
+    {"displayName":"claude-fable-5.1-max","modelKey":"claude-fable-5.1-max-text"},
+    {"displayName":"claude-opus-4-1-20250805","modelKey":"claude-opus-4-1-20250805"},
+    {"displayName":"claude-opus-4-1-20250805-thinking-16k","modelKey":"claude-opus-4-1-20250805-thinking-16k"},
+    {"displayName":"claude-opus-4-20250514","modelKey":"claude-opus-4-20250514"},
+    {"displayName":"claude-opus-4-20250514-thinking-16k","modelKey":"claude-opus-4-20250514-thinking-16k"},
+    {"displayName":"claude-opus-4-5-20251101","modelKey":"claude-opus-4-5-20251101"},
+    {"displayName":"claude-opus-4-5-20251101-high-32k","modelKey":"claude-opus-4-5-20251101-thinking-32k"},
+    {"displayName":"claude-opus-4-6","modelKey":"claude-opus-4-6"},
+    {"displayName":"claude-opus-4-6-high","modelKey":"claude-opus-4-6-thinking"},
+    {"displayName":"claude-opus-4-7","modelKey":"claude-opus-4-7"},
+    {"displayName":"claude-opus-4-7-high","modelKey":"claude-opus-4-7-thinking"},
+    {"displayName":"claude-opus-4-8","modelKey":"claude-opus-4-8-text"},
+    {"displayName":"claude-opus-4-8-high","modelKey":"claude-opus-4-8-thinking-text"},
+    {"displayName":"claude-opus-5-high","modelKey":"claude-opus-5-high-text"},
+    {"displayName":"claude-opus-5-max","modelKey":"claude-opus-5-max-text"}
+  ]
+}
